@@ -1,20 +1,59 @@
 package URI::Amazon::APA;
-
 use warnings;
 use strict;
+our $VERSION = sprintf "%d.%02d", q$Revision: 0.2 $ =~ /(\d+)/g;
+use Carp;
+use POSIX qw(strftime);
+use Digest::SHA qw(hmac_sha256_base64);
+use URI::Escape;
+use base 'URI::http';
+
+sub new{
+    my $class = shift;
+    my $self  = URI->new(@_);
+    ref $self eq 'URI::http' or carp "must be http";
+    bless $self, $class;
+}
+
+sub sign {
+    my $self  = shift;
+    my (%arg) = @_;
+    my %eq = map { split /=/, $_ } split /&/, $self->query();
+    my %q = map { $_ => uri_unescape( $eq{$_} ) } keys %eq;
+    $q{AWSAccessKeyId} = $arg{key};
+    # 2009-01-01T12:00:00Z
+    $q{Timestamp} ||= strftime( "%Y-%m-%dT%TZ", gmtime() );
+    $q{Version}   ||= '2009-01-01';
+    my $sq = join '&', map { $_ . '=' . uri_escape( $q{$_} ) } sort keys %q;
+    my $tosign = join "\n", 'GET', $self->host, $self->path, $sq;
+    my $signature = hmac_sha256_base64($tosign, $arg{secret});
+    $signature .= '=' while length($signature) % 4; # padding required
+    $q{Signature} = $signature;
+    $self->query_form( \%q );
+    $self;
+}
+
+sub signature {
+    my $self  = shift;
+    my (%arg) = @_;
+    my %eq = map { split /=/, $_ } split /&/, $self->query();
+    my %q = map { $_ => uri_unescape( $eq{$_} ) } keys %eq;
+    $q{Signature};
+}
+
+if ( $0 eq __FILE__ ) {
+}
+
+1; # End of URI::Amazon::APA
 
 =head1 NAME
 
-URI::Amazon::APA - The great new URI::Amazon::APA!
+URI::Amazon::APA - URI to access Amazon Product Advertising API
+
 
 =head1 VERSION
 
-Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
+$Id$
 
 =head1 SYNOPSIS
 
@@ -36,18 +75,6 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head2 function1
 
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
-
 =head1 AUTHOR
 
 Dan Kogai, C<< <dankogai at dan.co.jp> >>
@@ -57,9 +84,6 @@ Dan Kogai, C<< <dankogai at dan.co.jp> >>
 Please report any bugs or feature requests to C<bug-uri-amazon-apa at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=URI-Amazon-APA>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
@@ -100,8 +124,3 @@ Copyright 2009 Dan Kogai, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
-
-=cut
-
-1; # End of URI::Amazon::APA
