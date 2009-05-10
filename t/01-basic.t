@@ -16,6 +16,6 @@ $u->sign(
     key    => '00000000000000000000',
     secret => '1234567890',
 );
-warn $u;
+#warn $u;
 #is ($u->signature, 'Nace/U3Az4OhN7tISqgs1vdLBHBEijWcBeCqL5xN9xg=');
 is ($u->signature, 'Nace+U3Az4OhN7tISqgs1vdLBHBEijWcBeCqL5xN9xg=');

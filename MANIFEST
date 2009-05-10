@@ -5,5 +5,4 @@ README
 lib/URI/Amazon/APA.pm
 t/00-load.t
 t/01-basic.t
-t/pod-coverage.t
 t/pod.t

@@ -1,7 +1,7 @@
 package URI::Amazon::APA;
 use warnings;
 use strict;
-our $VERSION = sprintf "%d.%02d", q$Revision: 0.2 $ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%02d", q$Revision: 0.1 $ =~ /(\d+)/g;
 use Carp;
 use POSIX qw(strftime);
 use Digest::SHA qw(hmac_sha256_base64);
@@ -41,39 +41,70 @@ sub signature {
     $q{Signature};
 }
 
-if ( $0 eq __FILE__ ) {
-}
-
 1; # End of URI::Amazon::APA
 
 =head1 NAME
 
 URI::Amazon::APA - URI to access Amazon Product Advertising API
 
-
 =head1 VERSION
 
-$Id$
+$Id: APA.pm,v 0.1 2009/05/10 11:01:30 dankogai Exp dankogai $
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+  # self-explanatory
+  use strict;
+  use warnings;
+  use URI::Amazon::APA;
+  use LWP::UserAgent;
+  use XML::Simple;
+  use YAML::Syck;
 
-Perhaps a little code snippet.
+  use URI::Amazon::APA; # instead of URI
+  my $u = URI::Amazon::APA->new('http://webservices.amazon.com/onca/xml');
+  $u->query_form(
+    Service     => 'AWSECommerceService',
+    Operation   => 'ItemSearch',
+    Title       => shift || 'Perl',
+    SearchIndex => 'Books',
+  );
+  $u->sign(
+    key    => $public_key,
+    secret => $private_key,
+  );
 
-    use URI::Amazon::APA;
-
-    my $foo = URI::Amazon::APA->new();
-    ...
+  my $ua = LWP::UserAgent->new;
+  my $r  = $ua->get($u);
+  if ( $r->is_success ) {
+    print YAML::Syck::Dump( XMLin( $r->content ) );
+  }
+  else {
+    print $r->status_line, $r->as_string;
+  }
 
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+None.
 
-=head1 FUNCTIONS
+=head1 METHODS
 
-=head2 function1
+This adds the following methods to L<URI> object
+
+=head2 sign
+
+Sings the URI accordingly to the Amazon Product Advertising API.
+
+  $u->sign(
+    key    => $public_key,
+    secret => $private_key,
+  );
+
+=head2 signature
+
+Checks the signature within the URI;
+
+  print "The signature is " : $u->signature;
 
 =head1 AUTHOR
 
@@ -114,9 +145,9 @@ L<http://search.cpan.org/dist/URI-Amazon-APA/>
 
 =back
 
-
 =head1 ACKNOWLEDGEMENTS
 
+L<http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?rest-signature.html>
 
 =head1 COPYRIGHT & LICENSE
 
