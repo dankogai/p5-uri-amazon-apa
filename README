@@ -2,7 +2,7 @@ NAME
     URI::Amazon::APA - URI to access Amazon Product Advertising API
 
 VERSION
-    $Id: README,v 0.1 2009/05/10 11:04:33 dankogai Exp dankogai $
+    $Id: README,v 0.1 2009/05/10 11:04:33 dankogai Exp $
 
 SYNOPSIS
       # self-explanatory

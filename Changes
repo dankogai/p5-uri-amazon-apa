@@ -1,5 +1,11 @@
-Revision history for URI-Amazon-APA
+# Revision history for URI-Amazon-APA
+#
+# $Id: Changes,v 0.2 2009/05/22 19:31:05 dankogai Exp dankogai $
+$Revision: 0.2 $ $Date: 2009/05/22 19:31:05 $
+! lib/URI/Amazon/APA.pm
+  Handles non-ASCII query properly
+  http://blog.livedoor.jp/dankogai/archives/51211577.html#comments
 
-0.01    Date/time
+0.01    2009/05/10 11:01:30
         First version, released on an unsuspecting world.
 
