@@ -13,7 +13,7 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'  => 0,
-        'URI'         => 0,
+        'URI'         => 1.36,
         'URI::Escape' => 0,
         'Digest::SHA' => 0,
       },
