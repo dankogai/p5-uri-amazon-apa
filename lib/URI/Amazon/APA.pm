@@ -1,7 +1,7 @@
 package URI::Amazon::APA;
 use warnings;
 use strict;
-our $VERSION = sprintf "%d.%02d", q$Revision: 0.2 $ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%02d", q$Revision: 0.3 $ =~ /(\d+)/g;
 use Carp;
 use Digest::SHA qw(hmac_sha256_base64);
 use URI::Escape;
@@ -26,10 +26,11 @@ sub sign {
         join '',
           sprintf( '%04d-%02d-%02d', $yy + 1900, $mo + 1, $dd ), 'T',
           sprintf( '%02d:%02d:%02d', $hh,        $mm,     $ss ), 'Z';
-      };
-      $q{Version} ||= '2009-01-01';
+    };
+    $q{Version} ||= '2009-01-01';
     my $sq = join '&',
-      map { $_ . '=' . uri_escape_utf8( $q{$_} ) } sort keys %q;
+      map { $_ . '=' . uri_escape_utf8( $q{$_}, "^A-Za-z0-9\-_.~" ) }
+      sort keys %q;
     my $tosign = join "\n", 'GET', $self->host, $self->path, $sq;
     my $signature = hmac_sha256_base64( $tosign, $arg{secret} );
     $signature .= '=' while length($signature) % 4;    # padding required
@@ -54,7 +55,7 @@ URI::Amazon::APA - URI to access Amazon Product Advertising API
 
 =head1 VERSION
 
-$Id: APA.pm,v 0.2 2009/05/22 19:31:05 dankogai Exp dankogai $
+$Id: APA.pm,v 0.3 2009/10/19 09:33:51 dankogai Exp dankogai $
 
 =head1 SYNOPSIS
 

@@ -1,10 +1,12 @@
 # Revision history for URI-Amazon-APA
 #
-# $Id: Changes,v 0.2 2009/05/22 19:31:05 dankogai Exp dankogai $
-$Revision: 0.2 $ $Date: 2009/05/22 19:31:05 $
+# $Id: Changes,v 0.3 2009/10/19 09:33:51 dankogai Exp dankogai $
+$Revision: 0.3 $ $Date: 2009/10/19 09:33:51 $
+! lib/URI/Amazon/APA.pm
+  Single quote (') should be escaped
+  http://github.com/miyagawa/p5-uri-amazon-apa/commit/857d4d3a99b2ad4d913f2da0205fbd81b07870b2
 ! lib/URI/Amazon/APA.pm
   No longer uses POSIX::strftime().
-
 ! Makefile.PL
   Requires URI.pm 1.36 or better
   http://coderepos.org/share/changeset/34935
