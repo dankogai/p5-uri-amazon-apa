@@ -3,7 +3,6 @@ use warnings;
 use strict;
 our $VERSION = sprintf "%d.%02d", q$Revision: 0.2 $ =~ /(\d+)/g;
 use Carp;
-use POSIX qw(strftime);
 use Digest::SHA qw(hmac_sha256_base64);
 use URI::Escape;
 use Encode qw/decode_utf8/;
@@ -22,9 +21,13 @@ sub sign {
     my %eq    = map { split /=/, $_ } split /&/, $self->query();
     my %q     = map { $_ => decode_utf8( uri_unescape( $eq{$_} ) ) } keys %eq;
     $q{AWSAccessKeyId} = $arg{key};
-    $q{Timestamp} ||=
-      strftime( "%Y-%m-%dT%TZ", gmtime() );    # 2009-01-01T12:00:00Z
-    $q{Version} ||= '2009-01-01';
+    $q{Timestamp} ||= do {
+        my ( $ss, $mm, $hh, $dd, $mo, $yy ) = gmtime();
+        join '',
+          sprintf( '%04d-%02d-%02d', $yy + 1900, $mo + 1, $dd ), 'T',
+          sprintf( '%02d:%02d:%02d', $hh,        $mm,     $ss ), 'Z';
+      };
+      $q{Version} ||= '2009-01-01';
     my $sq = join '&',
       map { $_ . '=' . uri_escape_utf8( $q{$_} ) } sort keys %q;
     my $tosign = join "\n", 'GET', $self->host, $self->path, $sq;

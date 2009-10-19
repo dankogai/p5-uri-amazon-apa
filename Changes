@@ -2,10 +2,14 @@
 #
 # $Id: Changes,v 0.2 2009/05/22 19:31:05 dankogai Exp dankogai $
 $Revision: 0.2 $ $Date: 2009/05/22 19:31:05 $
+! lib/URI/Amazon/APA.pm
+  No longer uses POSIX::strftime().
+
 ! Makefile.PL
   Requires URI.pm 1.36 or better
   http://coderepos.org/share/changeset/34935
   http://twitter.com/matsuu/status/3559718797
+
 0.02 2009/05/22 19:31:05
 ! lib/URI/Amazon/APA.pm
   Handles non-ASCII query properly
