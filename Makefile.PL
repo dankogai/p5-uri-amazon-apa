@@ -12,6 +12,7 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     PREREQ_PM => {
+	'Encode'      => 2.00,
         'Test::More'  => 0,
         'URI'         => 1.36,
         'URI::Escape' => 0,
