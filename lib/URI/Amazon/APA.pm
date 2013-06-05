@@ -20,6 +20,7 @@ sub sign {
     my (%arg) = @_;
     my %eq    = map { split /=/, $_ } split /&/, $self->query();
     my %q     = map { $_ => decode_utf8( uri_unescape( $eq{$_} ) ) } keys %eq;
+    $q{Keywords} =~ s/\+/ /g if $q{Keywords};
     $q{AWSAccessKeyId} = $arg{key};
     $q{Timestamp} ||= do {
         my ( $ss, $mm, $hh, $dd, $mo, $yy ) = gmtime();
