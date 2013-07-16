@@ -3,6 +3,11 @@
 # $Id: Changes,v 0.4 2011/05/21 21:53:23 dankogai Exp dankogai $
 $Revision: 0.4 $ $Date: 2011/05/21 21:53:23 $
 ! lib/URI/Amazon/APA.pm
+  Merged: #85910 (URI::query_form has potential to double encode)
+  https://github.com/dankogai/p5-uri-amazon-apa/pull/1
+
+0.04 2011/05/21 21:53:23
+! lib/URI/Amazon/APA.pm
   Default API version upgraded to 2010-09-01
   https://rt.cpan.org/Ticket/Display.html?id=68244
 ! Makefile.PL
