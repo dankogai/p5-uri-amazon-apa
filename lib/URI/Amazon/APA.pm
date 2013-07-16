@@ -1,7 +1,7 @@
 package URI::Amazon::APA;
 use warnings;
 use strict;
-our $VERSION = sprintf "%d.%02d", q$Revision: 0.4 $ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%02d", q$Revision: 0.5 $ =~ /(\d+)/g;
 use Carp;
 use Digest::SHA qw(hmac_sha256_base64);
 use URI::Escape;
@@ -56,7 +56,7 @@ URI::Amazon::APA - URI to access Amazon Product Advertising API
 
 =head1 VERSION
 
-$Id: APA.pm,v 0.4 2011/05/21 21:53:23 dankogai Exp dankogai $
+$Id: APA.pm,v 0.5 2013/07/16 18:31:07 dankogai Exp $
 
 =head1 SYNOPSIS
 
